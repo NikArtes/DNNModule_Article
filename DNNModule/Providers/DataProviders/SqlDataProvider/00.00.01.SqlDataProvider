@@ -1,0 +1,374 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = 
+OBJECT_ID(N'{databaseOwner}[{objectQualifier}DNNModule_Article]') AND type 
+in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}DNNModule_Article]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}DNNModule_Article](
+			[ID] [int] NOT NULL IDENTITY (1, 1),
+			[Title] [nvarchar](max) NULL,
+			[Description] [nvarchar](max) NULL,
+			[Body] [nvarchar](max) NULL,
+			[CreatedOnDate] [datetime] NULL,
+			[ModuleId] [int] NULL
+		 CONSTRAINT [PK_{objectQualifier}DNNModule_Article] PRIMARY KEY CLUSTERED 
+		(
+			[ID] ASC
+		)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+		) ON [PRIMARY]
+	
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = 
+OBJECT_ID(N'{databaseOwner}[{objectQualifier}DNNModule_Article_Comments]') AND type 
+in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}DNNModule_Article_Comments]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_Comments]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}DNNModule_Article_Comments](
+			[ID] [int] NOT NULL IDENTITY (1, 1),
+			[BodyComments] [nvarchar](max) NULL,
+			[CreatedOnDate] [datetime] NULL,
+			[ModuleId] [int] NULL,
+			[ArticleId] [int] NULL,
+			[UserId] [int] NULL
+		 CONSTRAINT [PK_{objectQualifier}DNNModule_Article_Comments] PRIMARY KEY CLUSTERED 
+		(
+			[ID] ASC
+		)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+		) ON [PRIMARY]
+	
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = 
+OBJECT_ID(N'{databaseOwner}[{objectQualifier}DNNModule_Article_TegOnArticle]') AND type 
+in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}DNNModule_Article_TegOnArticle]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_TegOnArticle]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}DNNModule_Article_TegOnArticle](
+			[IdTeg] [int] NOT NULL,
+			[IdArticle] [int] NOT NULL
+		 CONSTRAINT [PK_{objectQualifier}DNNModule_Article_TegOnArticle] PRIMARY KEY CLUSTERED 
+		(
+			[IdTeg] ASC, [IdArticle] ASC
+		)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+		) ON [PRIMARY]
+	
+	END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = 
+OBJECT_ID(N'{databaseOwner}[{objectQualifier}DNNModule_Article_Teg_Article]') AND type 
+in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}DNNModule_Article_Teg_Article]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_Teg_Article]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}DNNModule_Article_Teg_Article](
+			[IdTeg] [int] NOT NULL IDENTITY(1,1),
+			[NameTeg] [nvarchar](max) NULL
+		 CONSTRAINT [PK_{objectQualifier}DNNModule_Article_Teg_Article] PRIMARY KEY CLUSTERED 
+		(
+			[IdTeg] ASC
+		)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+		) ON [PRIMARY]
+	
+	END
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DNNModule_Article_TegOnArticle
+	ADD CONSTRAINT FK_{objectQualifier}DNNModule_Article_TegOnArticle_Article FOREIGN KEY ( [IdArticle] ) 
+	REFERENCES {databaseOwner}{objectQualifier}DNNModule_Article ( [ID] ) ON DELETE CASCADE
+	ON UPDATE CASCADE NOT FOR REPLICATION 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DNNModule_Article_TegOnArticle
+	ADD CONSTRAINT FK_{objectQualifier}DNNModule_Article_TegOnArticle_Teg_Article FOREIGN KEY ( [IdTeg] ) 
+	REFERENCES {databaseOwner}{objectQualifier}DNNModule_Article_Teg_Article ( [IdTeg] ) ON DELETE CASCADE
+	ON UPDATE CASCADE NOT FOR REPLICATION 
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}DNNModule_Article_Comments
+	ADD CONSTRAINT FK_{objectQualifier}DNNModule_Article_{objectQualifier}DNNModule_Article FOREIGN KEY ( [ArticleId] ) 
+	REFERENCES {databaseOwner}{objectQualifier}DNNModule_Article ( [ID] ) ON DELETE CASCADE
+	ON UPDATE CASCADE NOT FOR REPLICATION 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DNNModule_Article_Comments
+	ADD CONSTRAINT FK_{objectQualifier}DNNModule_Article_Comments_Users FOREIGN KEY ( [UserId] ) 
+	REFERENCES {databaseOwner}{objectQualifier}Users ( [UserID] ) ON DELETE CASCADE
+	ON UPDATE CASCADE NOT FOR REPLICATION 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_AddArticle]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_AddArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_AddArticle
+	@ModuleId       int,
+	@Title nvarchar(MAX),
+	@Description nvarchar(MAX),
+	@Body nvarchar(MAX),
+	@CreatedOnDate	datetime
+AS
+INSERT INTO {databaseOwner}{objectQualifier}DNNModule_Article (
+	ModuleId,
+	Title,
+	Description,
+	Body,
+	CreatedOnDate	
+) 
+VALUES (
+	@ModuleId,
+	@Title,
+	@Description,
+	@Body,
+	@CreatedOnDate
+)
+
+Select @@Identity
+GO
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_UpdateArticle]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_UpdateArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_UpdateArticle
+	@ArticleId int,
+	@ModuleId int,
+	@Title nvarchar(MAX),
+	@Description nvarchar(MAX),
+	@Body nvarchar(MAX)
+AS
+UPDATE {databaseOwner}{objectQualifier}DNNModule_Article
+	Set ModuleId = @ModuleId,
+	Title = @Title,
+	Description = @Description,
+	Body = @Body	
+WHERE
+	ID = @ArticleId
+GO
+
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_GetArticle]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetArticle
+	@ArticleId int
+AS
+SELECT 
+	a.[ID],
+	a.ModuleId,
+	a.Title,
+	a.Description,
+	a.Body,
+	a.CreatedOnDate
+FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article a
+WHERE 
+	ID = @ArticleId
+GO
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_GetArticles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetArticles
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetArticles
+	@ModuleId int
+AS
+SELECT 
+	a.ID,
+	a.ModuleId,
+	a.Title,
+	a.Description,
+	a.Body,
+	a.CreatedOnDate
+FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article a
+WHERE 
+	a.ModuleId = @ModuleId
+GO
+
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_DeleteArticles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_DeleteArticles
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_DeleteArticles
+	@ModuleId int
+AS
+DELETE FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article
+WHERE 
+	ModuleId = @ModuleId
+GO
+
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_DeleteArticle]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_DeleteArticle
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_DeleteArticle
+	@ArticleId int
+AS
+DELETE FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article
+WHERE 
+	ID = @ArticleId
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_GetComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetComments
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetComments
+	@Id int
+AS
+SELECT 
+	a.ID,
+	a.ModuleId,
+	a.BodyComments,
+	a.CreatedOnDate
+FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article_Comments a
+WHERE 
+	a.ArticleId=@Id
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DNNModule_Article_AddComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_AddComment
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_AddComment
+	@ModuleId       int,
+	@BodyComment nvarchar(MAX),
+	@CreatedOnDate	datetime,
+	@ArticleId int,
+	@UserId int
+AS
+INSERT INTO {databaseOwner}{objectQualifier}DNNModule_Article_Comments (
+	ModuleId,
+	BodyComments,
+	CreatedOnDate,
+	ArticleId,
+	UserId	
+) 
+VALUES (
+	@ModuleId,
+	@BodyComment,
+	@CreatedOnDate,
+	@ArticleId,
+	@UserId
+)
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_AddTegs
+	@NameTeg nvarchar(MAX)
+AS
+INSERT INTO {databaseOwner}{objectQualifier}DNNModule_Article_Teg_Article (
+	NameTeg	
+) 
+VALUES (
+	@NameTeg
+)
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetTegs
+AS
+SELECT *
+FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article_Teg_Article a
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_DeleteTeg
+	@NameTeg nvarchar(MAX)
+AS
+DELETE FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article_Teg_Article
+WHERE 
+	NameTeg=@NameTeg
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetTegsForID
+	@NameTeg nvarchar(MAX)
+AS
+SELECT a.IdTeg
+FROM
+	{databaseOwner}{objectQualifier}DNNModule_Article_Teg_Article a
+WHERE a.NameTeg=@NameTeg
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_AddTegsOnArticle
+	@IdTeg int,
+	@IdArticle int
+AS
+INSERT INTO {databaseOwner}{objectQualifier}DNNModule_Article_TegOnArticle (
+	IdTeg,
+	IdArticle	
+) 
+VALUES (
+	@IdTeg, 
+	@IdArticle 
+)
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_GetTegsOnArticle
+	@ArticleId int
+AS
+SELECT dat.*
+FROM {databaseOwner}{objectQualifier}DNNModule_Article da, {databaseOwner}{objectQualifier}DNNModule_Article_TegOnArticle dt,
+{databaseOwner}{objectQualifier}DNNModule_Article_Teg_Article dat
+WHERE da.ID=dt.IdArticle
+and dt.IdTeg=dat.IdTeg
+and da.ID=@ArticleId
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DNNModule_Article_UpdateTegs
+	@NameTeg1 nvarchar(MAX),
+	@NameTeg2 nvarchar(MAX)
+AS
+UPDATE {databaseOwner}{objectQualifier}DNNModule_Article_Teg_Article
+	Set NameTeg=@NameTeg2	
+WHERE
+	NameTeg=@NameTeg1
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
