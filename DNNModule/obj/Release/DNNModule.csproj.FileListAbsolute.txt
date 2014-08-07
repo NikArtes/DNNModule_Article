@@ -1,4 +1,0 @@
-C:\inetpub\wwwroot\dnndev.me\bin\DNNModule.dll
-C:\inetpub\wwwroot\dnndev.me\bin\DNNModule.pdb
-C:\inetpub\wwwroot\dnndev.me\DesktopModules\DNNModule\obj\Release\DNNModule.dll
-C:\inetpub\wwwroot\dnndev.me\DesktopModules\DNNModule\obj\Release\DNNModule.pdb
