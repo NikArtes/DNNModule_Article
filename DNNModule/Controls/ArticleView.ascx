@@ -5,6 +5,7 @@
 </asp:Panel>
 <asp:Panel ID="plArticleBody" Style="color: black; font-family: 'Times New Roman'; font-size: 14pt; margin-left: 15px" runat="server" CssClass="Normal ArticleBody">
 </asp:Panel>
+<asp:Label ID="lblLoginedUser" runat="server" Text="только зарегистрированные пользователи могут оставлять комментарии"></asp:Label>
 <div class="ArticleAdmin" runat="server" id="ArticleAdmin">
     <asp:LinkButton ID="lnkEdit" runat="server" ResourceKey="lnkEdit" OnClick="lnkEdit_Click"></asp:LinkButton>
     <asp:LinkButton ID="lnkDelete" runat="server" ResourceKey="lnkDelete" OnClick="lnkDelete_Click"></asp:LinkButton>

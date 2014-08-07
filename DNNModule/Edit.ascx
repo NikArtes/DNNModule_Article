@@ -9,20 +9,27 @@
     <dt>
         <dnn:label ID="lblTitle" ControlName="txtTitle" runat="server" ResourceKey="txtTitle" Style="color:black; font-family: 'Times New Roman'; font-size: 14pt"/>
     <dd>
+    </dd>
+    <dd>
         <asp:TextBox ID="txtTitle" runat="server" Columns="50" /><asp:RequiredFieldValidator
             ID="rfvTitle" runat="server" ControlToValidate="txtTitle" CssClass="NormalRed" />
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTitle"
+            CssClass="NormalRed" Display="dynamic" 
+        SetFocusOnError="True">!</asp:RequiredFieldValidator>
     </dd>
     <dt>
         <dnn:label ID="lblDescription" ControlName="txtDescription" runat="server" ResourceKey="txtDescription" Style="color:black; font-family: 'Times New Roman'; font-size: 14pt"/>
     <dd>
         <dnn:TextEditor ID="txtDescription" runat="server" TextMode="MultiLine" Width="600px" Height="400px" />
-        <%--<asp:RequiredFieldValidator ID="rfvDescription" runat="server" ControlToValidate="txtDescription"
-            CssClass="NormalRed" />--%>
+        <asp:RequiredFieldValidator ID="rfvDescription" runat="server" ControlToValidate="txtDescription"
+            CssClass="NormalRed" />
     </dd>
     <dt>
         <dnn:label ID="lblBody" ControlName="txtBody" runat="server" ResourceKey="txtBody" Style="color:black; font-family: 'Times New Roman'; font-size: 14pt"/>
     <dd>
         <dnn:TextEditor ID="txtBody" runat="server" Width="600px" Height="400px" />
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtBody"
+            CssClass="NormalRed" />
     </dd>
     <dt>
         <dnn:label ID="lblTerms" runat="server" ControlName="tsTerms" />

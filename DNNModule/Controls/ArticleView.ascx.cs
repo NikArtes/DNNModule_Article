@@ -29,14 +29,24 @@ namespace Christoc.Modules.DNNModule.Controls
                 tp.Description = curArticle.Description;
                 lnkEdit.Attributes["href"] = EditUrl(String.Empty, String.Empty, "Edit", "aid=" + curArticle.ArticleId);
 
-                if (!IsEditable && UserId==-1)
+                if (!IsEditable && UserId == -1)
+                {
                     ArticleAdmin.Visible = false;
-
+                    lblLoginedUser.Visible = true;
+                }
+                else
+                {
+                    lblLoginedUser.Visible = false;
+                }
                 rptArticleComments.DataSource = ArticleController.GetComments(ArticleId, ModuleId);
                 rptArticleComments.DataBind();
 
                 rptTegsOnArticle.DataSource = ArticleController.GetTegsOnArticle(ArticleId);
                 rptTegsOnArticle.DataBind();
+                if (TextBoxComment.Text != null)
+                {
+                    TextBoxComment.Text = string.Empty;
+                }
 
             }   
         }
@@ -76,6 +86,7 @@ namespace Christoc.Modules.DNNModule.Controls
                 c.UserId = UserId;
                 ArticleController.SaveComment(c);
             }
+            Response.Redirect(Request.RawUrl);
         }
 
         protected void rptTegsOnArticle_ItemCommand(object source, RepeaterCommandEventArgs e)
